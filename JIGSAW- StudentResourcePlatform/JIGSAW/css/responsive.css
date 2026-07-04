@@ -1,0 +1,116 @@
+/* ============================================================================
+   JIGSAW — responsive.css
+   Loaded last on every page so these rules take priority at each breakpoint.
+   Organized mobile-down from the largest breakpoint, mirroring how a
+   designer would review a desktop layout and progressively simplify it.
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------
+   Large tablets / small laptops
+   --------------------------------------------------------------------- */
+@media (max-width: 1080px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+
+  .hero-inner { grid-template-columns: 1fr; text-align: center; }
+  .hero-visual { order: -1; margin: 0 auto var(--space-lg); }
+  .hero-actions { justify-content: center; }
+  .hero-stats { justify-content: center; }
+
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---------------------------------------------------------------------
+   Tablets
+   --------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  :root { --space-2xl: 64px; }
+
+  .container { padding: 0 var(--space-md); }
+
+  .nav-links,
+  .nav-auth { display: none; }
+
+  .nav-toggle { display: flex; }
+
+  .navbar.is-open .nav-links,
+  .navbar.is-open .nav-auth {
+    display: flex;
+  }
+
+  .navbar.is-open .navbar-inner {
+    flex-wrap: wrap;
+    height: auto;
+    padding-bottom: var(--space-md);
+  }
+
+  .navbar.is-open .nav-links {
+    order: 3;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 4px;
+    margin-top: var(--space-sm);
+  }
+
+  .navbar.is-open .nav-links a { width: 100%; }
+
+  .navbar.is-open .nav-auth {
+    order: 4;
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: var(--space-sm);
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4 { grid-template-columns: 1fr 1fr; }
+
+  .section-head { flex-direction: column; align-items: flex-start; }
+
+  .newsletter-inner { flex-direction: column; align-items: flex-start; text-align: left; }
+  .newsletter-form { width: 100%; }
+  .newsletter-form input { flex: 1; min-width: 0; }
+
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--space-md) var(--space-lg); }
+}
+
+/* ---------------------------------------------------------------------
+   Large phones
+   --------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  :root { --space-2xl: 48px; --space-xl: 40px; }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+
+  .navbar-inner { padding: 0 var(--space-md); height: 64px; }
+  .search-panel { top: 64px; }
+
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .grid-auto { grid-template-columns: 1fr; }
+
+  .hero-actions { flex-direction: column; width: 100%; }
+  .hero-actions .btn { width: 100%; }
+
+  .stats-strip { grid-template-columns: repeat(2, 1fr); }
+
+  .footer-grid { grid-template-columns: 1fr; gap: var(--space-lg); text-align: left; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+
+  #backToTop { right: 16px; bottom: 16px; width: 42px; height: 42px; }
+
+  .contact-grid,
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------------------------------------------------------------------
+   Small phones
+   --------------------------------------------------------------------- */
+@media (max-width: 400px) {
+  .container { padding: 0 var(--space-sm); }
+  .btn { padding: 12px 20px; font-size: 0.85rem; }
+  .newsletter-form input { min-width: 0; width: 100%; }
+}

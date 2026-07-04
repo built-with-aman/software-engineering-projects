@@ -1,0 +1,568 @@
+/* ============================================================================
+   JIGSAW — style.css
+   Core design system: tokens, reset, typography, and reusable components.
+   Component-specific files (navbar.css, footer.css) build on these variables
+   so every page shares one visual language instead of redefining values.
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------
+   Font loading
+   Sora carries the brand's geometric, "pieces click into place" feel in
+   headings. Inter stays neutral for body copy so long descriptions read
+   comfortably. JetBrains Mono is reserved for stats, badges, and labels —
+   anywhere a number or tag needs to feel like data rather than prose.
+   ---------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ----------------------------------------------------------------------
+   Design tokens
+   Centralizing every color/spacing/radius value here means a future theme
+   change (e.g. rebranding the accent color) touches one file, not fifty.
+   ---------------------------------------------------------------------- */
+:root {
+  /* Color — dark theme is the default brand experience */
+  --color-bg: #0f1320;
+  --color-bg-alt: #141a2c;
+  --color-surface: #1a2138;
+  --color-surface-glass: rgba(255, 255, 255, 0.05);
+  --color-border: rgba(255, 255, 255, 0.09);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+
+  --color-text: #edeff7;
+  --color-text-muted: #9aa3b8;
+  --color-text-faint: #6b7488;
+
+  --color-accent: #f2a93b;        /* amber — primary brand accent */
+  --color-accent-hover: #ffbe5c;
+  --color-accent-soft: rgba(242, 169, 59, 0.14);
+
+  --color-teal: #2dd4bf;          /* secondary — growth / progress */
+  --color-teal-soft: rgba(45, 212, 191, 0.14);
+
+  --color-blue: #6c8cff;          /* tertiary — links / info */
+  --color-success: #34d399;
+  --color-danger: #f87171;
+  --color-danger-soft: rgba(248, 113, 113, 0.12);
+
+  /* Typography */
+  --font-display: 'Sora', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Spacing scale (used instead of arbitrary magic numbers) */
+  --space-xs: 6px;
+  --space-sm: 12px;
+  --space-md: 20px;
+  --space-lg: 32px;
+  --space-xl: 56px;
+  --space-2xl: 88px;
+
+  /* Layout */
+  --container-width: 1200px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.35);
+  --shadow-glow: 0 0 0 1px rgba(242, 169, 59, 0.35), 0 8px 30px rgba(242, 169, 59, 0.18);
+
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s cubic-bezier(0.22, 0.7, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.22, 0.7, 0.2, 1);
+}
+
+/* ----------------------------------------------------------------------
+   Light theme override
+   Toggled by main.js via [data-theme="light"] on <html>. Kept as a
+   parallel token set (not a full recolor) so components never need
+   theme-specific overrides of their own — they just inherit variables.
+   ---------------------------------------------------------------------- */
+[data-theme="light"] {
+  --color-bg: #f7f8fb;
+  --color-bg-alt: #eef0f6;
+  --color-surface: #ffffff;
+  --color-surface-glass: rgba(15, 19, 32, 0.04);
+  --color-border: rgba(15, 19, 32, 0.09);
+  --color-border-strong: rgba(15, 19, 32, 0.16);
+
+  --color-text: #171c2c;
+  --color-text-muted: #545c72;
+  --color-text-faint: #8891a4;
+
+  --color-accent-soft: rgba(242, 169, 59, 0.16);
+  --color-teal-soft: rgba(45, 212, 191, 0.16);
+  --color-danger-soft: rgba(248, 113, 113, 0.14);
+
+  --shadow-sm: 0 2px 8px rgba(15, 19, 32, 0.06);
+  --shadow-md: 0 12px 32px rgba(15, 19, 32, 0.10);
+}
+
+/* ----------------------------------------------------------------------
+   Reset
+   ---------------------------------------------------------------------- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background var(--transition-base), color var(--transition-base);
+  overflow-x: hidden;
+}
+
+img, svg { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+
+ul, ol { list-style: none; }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+input, textarea, select { font-family: inherit; font-size: inherit; color: inherit; }
+
+/* Respect users who've asked the OS to minimize motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible keyboard focus everywhere — required for an accessible platform,
+   not just a nice-to-have, since many students navigate by keyboard. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ----------------------------------------------------------------------
+   Typography scale
+   ---------------------------------------------------------------------- */
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; line-height: 1.2; color: var(--color-text); }
+
+h1 { font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.7rem, 2.8vw, 2.4rem); letter-spacing: -0.01em; }
+h3 { font-size: 1.3rem; }
+h4 { font-size: 1.05rem; }
+
+p { color: var(--color-text-muted); }
+
+.text-mono {
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-sm);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+/* ----------------------------------------------------------------------
+   Layout primitives
+   ---------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.section {
+  padding: var(--space-2xl) 0;
+}
+
+.section-alt { background: var(--color-bg-alt); }
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.section-head p { max-width: 52ch; }
+
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+.grid-auto {
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+}
+
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-wrap { flex-wrap: wrap; }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+
+/* ----------------------------------------------------------------------
+   Buttons
+   ---------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #171200;
+}
+
+.btn-primary:hover { background: var(--color-accent-hover); box-shadow: var(--shadow-glow); }
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.btn-outline:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+.btn-ghost {
+  background: var(--color-surface-glass);
+  color: var(--color-text);
+}
+
+.btn-ghost:hover { background: var(--color-border-strong); }
+
+.btn-block { width: 100%; }
+
+.btn-sm { padding: 9px 18px; font-size: 0.82rem; }
+
+/* ----------------------------------------------------------------------
+   Glass surface
+   Used for elevated panels (cards, dropdowns, modals) that should feel
+   like they float above the base background rather than sit flush on it.
+   ---------------------------------------------------------------------- */
+.glass {
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+/* ----------------------------------------------------------------------
+   Puzzle-tab card — the platform's signature component.
+   A small circular "tab" sits on the top edge of every card, echoing a
+   real jigsaw piece's knob. It's rendered as a semicircle notch cut from
+   the card's top border using a radial mask, so the card genuinely looks
+   like it could interlock with the one beside it.
+   ---------------------------------------------------------------------- */
+.card {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg) var(--space-md) var(--space-md);
+  transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 28px;
+  width: 18px;
+  height: 18px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  transition: background var(--transition-base);
+}
+
+.section-alt .card::before { background: var(--color-bg-alt); }
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.card-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  margin-bottom: var(--space-sm);
+}
+
+.card-tag.tag-teal { background: var(--color-teal-soft); color: var(--color-teal); }
+
+/* ----------------------------------------------------------------------
+   Badges (difficulty, pricing, status)
+   ---------------------------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.badge-free { background: var(--color-teal-soft); color: var(--color-teal); }
+.badge-paid { background: var(--color-accent-soft); color: var(--color-accent); }
+.badge-beginner { background: rgba(108, 140, 255, 0.14); color: var(--color-blue); }
+.badge-intermediate { background: var(--color-accent-soft); color: var(--color-accent); }
+.badge-advanced { background: var(--color-danger-soft); color: var(--color-danger); }
+
+/* ----------------------------------------------------------------------
+   Forms
+   ---------------------------------------------------------------------- */
+fieldset {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+legend {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 0 8px;
+  color: var(--color-accent);
+}
+
+.form-row { margin-bottom: var(--space-md); display: flex; flex-direction: column; gap: 6px; }
+
+.form-row label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+  padding: 12px 14px;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  transition: border-color var(--transition-fast);
+}
+
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+  border-color: var(--color-accent);
+}
+
+.form-row textarea { resize: vertical; min-height: 120px; }
+
+.form-hint { font-size: 0.78rem; color: var(--color-text-faint); }
+
+.form-error {
+  font-size: 0.78rem;
+  color: var(--color-danger);
+  display: none;
+}
+
+.form-row.invalid input,
+.form-row.invalid select,
+.form-row.invalid textarea { border-color: var(--color-danger); }
+
+.form-row.invalid .form-error { display: block; }
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.checkbox-row input { width: 16px; height: 16px; accent-color: var(--color-accent); }
+
+/* ----------------------------------------------------------------------
+   Hero section
+   Two-column layout: copy on one side, a visual on the other. Collapses
+   to a single stacked column on tablets and below (see responsive.css).
+   ---------------------------------------------------------------------- */
+.hero {
+  padding: var(--space-2xl) 0;
+  background: radial-gradient(circle at 15% 20%, rgba(242, 169, 59, 0.08), transparent 45%),
+              radial-gradient(circle at 85% 80%, rgba(45, 212, 191, 0.07), transparent 45%);
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+.hero-copy .hero-actions { flex-wrap: wrap; }
+
+.hero-stats > div { min-width: 90px; }
+
+.hero-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.hero-visual svg {
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.35));
+}
+
+/* ----------------------------------------------------------------------
+   Stats strip — reused on About and Dashboard pages
+   ---------------------------------------------------------------------- */
+.stats-strip { grid-template-columns: repeat(4, 1fr); }
+
+/* ----------------------------------------------------------------------
+   FAQ accordion item
+   Built on the native <details>/<summary> pair for free keyboard and
+   screen-reader support, styled to match the card component.
+   ---------------------------------------------------------------------- */
+.faq-item summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-item summary::-webkit-details-marker { display: none; }
+
+.faq-item summary::after {
+  content: '+';
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  color: var(--color-accent);
+  transition: transform var(--transition-fast);
+}
+
+.faq-item[open] summary::after { transform: rotate(45deg); }
+
+/* ----------------------------------------------------------------------
+   Slider (testimonials / featured rails)
+   Structural styling only — JigsawSlider (slider.js) handles the
+   transform-based movement between slides.
+   ---------------------------------------------------------------------- */
+.slider-wrap { position: relative; }
+
+.slider-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.slider-dot.is-active { background: var(--color-accent); transform: scale(1.3); }
+
+/* ----------------------------------------------------------------------
+   Scroll reveal
+   Elements start slightly lowered and transparent; main.js adds
+   .is-visible via IntersectionObserver as each one enters the viewport.
+   ---------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.22, 0.7, 0.2, 1);
+}
+
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+/* ----------------------------------------------------------------------
+   Back to top button
+   ---------------------------------------------------------------------- */
+#backToTop {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #171200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity var(--transition-base), transform var(--transition-base), visibility var(--transition-base);
+  z-index: 90;
+}
+
+#backToTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+/* ----------------------------------------------------------------------
+   Utility classes
+   ---------------------------------------------------------------------- */
+.text-center { text-align: center; }
+.text-muted { color: var(--color-text-muted); }
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
