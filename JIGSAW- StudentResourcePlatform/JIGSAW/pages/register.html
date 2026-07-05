@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign Up — JIGSAW</title>
+<meta name="description" content="Create a JIGSAW account to track your learning pathway progress and join the community." />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/navbar.css" />
+<link rel="stylesheet" href="../css/footer.css" />
+<link rel="stylesheet" href="../css/responsive.css" />
+<style>
+  .auth-shell { min-height: calc(100vh - 72px); display:flex; align-items:center; justify-content:center; padding: var(--space-2xl) var(--space-md); }
+  .auth-card-wide { width:100%; max-width:560px; padding: var(--space-xl); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="navbar" id="siteNavbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="brand"><div class="brand-mark"><span></span><span></span><span></span><span></span></div><span class="brand-name">JIG<span>SAW</span></span></a>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="coursework.html">Coursework</a></li>
+        <li><a href="pathways.html">Pathways</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="navbar-actions">
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle dark or light theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+        <div class="nav-auth"><a href="login.html" class="btn btn-ghost btn-sm">Log In</a><a href="register.html" class="btn btn-primary btn-sm">Sign Up</a></div>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="auth-shell">
+    <div class="card auth-card-wide reveal is-visible">
+      <div class="text-center mb-lg">
+        <div class="brand-mark" style="margin:0 auto 14px;"><span></span><span></span><span></span><span></span></div>
+        <h2>Create your account</h2>
+        <p class="mt-sm" style="font-size:0.88rem;">Track pathway progress and join the community discussion.</p>
+      </div>
+
+      <div class="form-success" id="formSuccess" style="display:none;background:var(--color-teal-soft);color:var(--color-teal);border:1px solid var(--color-teal);padding:12px 14px;border-radius:var(--radius-sm);margin-bottom:var(--space-md);font-size:0.85rem;text-align:center;">
+        Account created — you can now log in.
+      </div>
+
+      <form id="registerForm" novalidate>
+
+        <fieldset>
+          <legend>Personal Details</legend>
+
+          <div class="form-row" id="fullNameRow">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" placeholder="e.g. Ananya Rao" required minlength="2" />
+            <span class="form-error">Please enter your full name.</span>
+          </div>
+
+          <div class="form-row" id="regEmailRow">
+            <label for="regEmail">Email Address</label>
+            <input type="email" id="regEmail" name="email" placeholder="you@example.com" required />
+            <span class="form-error">Please enter a valid email address.</span>
+          </div>
+
+          <div class="form-row" id="phoneRow">
+            <label for="phone">Phone Number <span class="text-muted" style="font-weight:400;text-transform:none;">(optional)</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" pattern="^[+]?[0-9\s-]{7,15}$" />
+            <span class="form-error">Please enter a valid phone number.</span>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Account Security</legend>
+
+          <div class="form-row" id="passwordRow">
+            <label for="regPassword">Password</label>
+            <input type="password" id="regPassword" name="password" placeholder="At least 8 characters, 1 number" required minlength="8" />
+            <span class="form-hint">Must contain at least 8 characters and one number.</span>
+            <span class="form-error">Password must be at least 8 characters and include a number.</span>
+          </div>
+
+          <div class="form-row" id="confirmPasswordRow">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" required />
+            <span class="form-error">Passwords do not match.</span>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Learning Preferences</legend>
+
+          <div class="form-row" id="domainRow">
+            <label for="primaryDomain">Primary Interest</label>
+            <select id="primaryDomain" name="domain" required>
+              <option value="">Select a domain…</option>
+              <option value="frontend">Frontend Development</option>
+              <option value="backend">Backend Development</option>
+              <option value="fullstack">Full Stack Development</option>
+              <option value="ai">Artificial Intelligence</option>
+              <option value="cybersecurity">Cyber Security</option>
+              <option value="cloud">Cloud Computing</option>
+              <option value="devops">DevOps</option>
+            </select>
+            <span class="form-error">Please select your primary interest.</span>
+          </div>
+
+          <div class="checkbox-row mb-md">
+            <input type="checkbox" id="termsAgree" name="terms" required />
+            <label for="termsAgree" style="text-transform:none;font-family:var(--font-body);font-size:0.85rem;">I agree to the <a href="#" style="color:var(--color-accent);">Terms of Use</a> and <a href="#" style="color:var(--color-accent);">Privacy Policy</a></label>
+          </div>
+        </fieldset>
+
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+      </form>
+
+      <p class="text-center mt-md" style="font-size:0.85rem;">Already have an account? <a href="login.html" style="color:var(--color-accent);">Log in</a></p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer" style="padding-top:var(--space-lg);">
+  <div class="footer-bottom" style="border-top:none;">
+    <p>© 2026 JIGSAW Learning Platform. Built as a student engineering project.</p>
+    <div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/validation.js"></script>
+<script>
+  bindFormValidation('registerForm',
+    (formData) => {
+      const fullName = formData.get('fullName') || '';
+      const email = formData.get('email') || '';
+      const phone = formData.get('phone') || '';
+      const password = formData.get('password') || '';
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const domain = formData.get('domain') || '';
+      const terms = document.getElementById('termsAgree').checked;
+
+      let valid = true;
+
+      const nameValid = Validators.minLength(fullName, 2);
+      setRowValidity(document.getElementById('fullNameRow'), nameValid);
+      if (!nameValid) valid = false;
+
+      const emailValid = Validators.email(email);
+      setRowValidity(document.getElementById('regEmailRow'), emailValid);
+      if (!emailValid) valid = false;
+
+      // Phone is optional — only validate the format if something was typed.
+      const phoneValid = phone.trim() === '' || Validators.phone(phone);
+      setRowValidity(document.getElementById('phoneRow'), phoneValid);
+      if (!phoneValid) valid = false;
+
+      const passwordValid = Validators.password(password);
+      setRowValidity(document.getElementById('passwordRow'), passwordValid);
+      if (!passwordValid) valid = false;
+
+      const matchValid = Validators.matches(password, confirmPassword) && confirmPassword.length > 0;
+      setRowValidity(document.getElementById('confirmPasswordRow'), matchValid);
+      if (!matchValid) valid = false;
+
+      const domainValid = Validators.required(domain);
+      setRowValidity(document.getElementById('domainRow'), domainValid);
+      if (!domainValid) valid = false;
+
+      if (!terms) valid = false;
+
+      return valid;
+    },
+    () => {
+      // A real implementation would POST this payload to a backend that
+      // hashes the password and inserts a new row into the `users` table.
+      document.getElementById('formSuccess').style.display = 'block';
+      document.getElementById('registerForm').reset();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  );
+</script>
+</body>
+</html>

@@ -66,6 +66,8 @@
   .grid-3,
   .grid-4 { grid-template-columns: 1fr 1fr; }
 
+  .pathway-selector { grid-template-columns: repeat(3, 1fr); }
+
   .section-head { flex-direction: column; align-items: flex-start; }
 
   .newsletter-inner { flex-direction: column; align-items: flex-start; text-align: left; }
@@ -92,6 +94,8 @@
   .grid-4,
   .grid-auto { grid-template-columns: 1fr; }
 
+  .pathway-selector { grid-template-columns: repeat(2, 1fr); }
+
   .hero-actions { flex-direction: column; width: 100%; }
   .hero-actions .btn { width: 100%; }
 
@@ -103,7 +107,8 @@
   #backToTop { right: 16px; bottom: 16px; width: 42px; height: 42px; }
 
   .contact-grid,
-  .dashboard-grid { grid-template-columns: 1fr; }
+  .dashboard-grid,
+  .community-layout { grid-template-columns: 1fr; }
 }
 
 /* ---------------------------------------------------------------------

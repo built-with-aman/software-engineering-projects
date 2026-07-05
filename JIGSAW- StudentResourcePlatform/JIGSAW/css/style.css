@@ -221,6 +221,20 @@ p { color: var(--color-text-muted); }
   grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
 }
 
+/* Community page: wide thread column + narrow sidebar, collapsing to a
+   single stacked column on tablets — see responsive.css for the breakpoint. */
+.community-layout {
+  grid-template-columns: 2fr 1fr;
+}
+
+/* Contact page: form + info column, collapsing to one column on tablets. */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
 .flex { display: flex; }
 .flex-center { display: flex; align-items: center; justify-content: center; }
 .flex-between { display: flex; align-items: center; justify-content: space-between; }
